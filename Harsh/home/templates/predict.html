@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible"
+		content="IE=edge">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0">
+	<title>
+		Build a Survey Form using HTML and CSS
+	</title>
+
+	<style>
+
+		/* Styling the Body element i.e. Color,
+		Font, Alignment */
+
+
+    html {
+      height:100%;
+    }
+    
+    body {
+      margin:0;
+    }
+    
+    .bg {
+      animation:slide 3s ease-in-out infinite alternate;
+      background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%);
+      bottom:0;
+      left:-50%;
+      opacity:.5;
+      position:fixed;
+      right:-50%;
+      top:0;
+      z-index:-1;
+    }
+    
+    .bg2 {
+      animation-direction:alternate-reverse;
+      animation-duration:4s;
+    }
+    
+    .bg3 {
+      animation-duration:5s;
+    }
+    
+    h1 {
+      font-family:monospace;
+    }
+    
+    @keyframes slide {
+      0% {
+        transform:translateX(-25%);
+      }
+      100% {
+        transform:translateX(25%);
+      }
+    }
+		body {
+			
+			font-family: Verdana;
+			text-align: center;
+		}
+
+		/* Styling the Form (Color, Padding, Shadow) */
+		form {
+			background-color: #fff;
+			max-width: 500px;
+			margin: 50px auto;
+			padding: 30px 20px;
+			box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.5);
+		}
+
+		/* Styling form-control Class */
+		.form-control {
+			text-align: left;
+			margin-bottom: 25px;
+		}
+
+		/* Styling form-control Label */
+		.form-control label {
+			display: block;
+			margin-bottom: 10px;
+		}
+
+		/* Styling form-control input,
+		select, textarea */
+		.form-control input,
+		.form-control select,
+		.form-control textarea {
+			border: 1px solid #777;
+			border-radius: 2px;
+			font-family: inherit;
+			padding: 10px;
+			display: block;
+			width: 95%;
+		}
+
+		/* Styling form-control Radio
+		button and Checkbox */
+		.form-control input[type="radio"],
+		.form-control input[type="checkbox"] {
+			display: inline-block;
+			width: auto;
+		}
+
+		/* Styling Button */
+		button {
+			background-color: #05c46b;
+			border: 1px solid #777;
+			border-radius: 2px;
+			font-family: inherit;
+			font-size: 21px;
+			display: block;
+			width: 100%;
+			margin-top: 50px;
+			margin-bottom: 20px;
+		}
+
+    
+  
+	</style>
+
+</head>
+
+<body>
+
+  <div class="bg"></div>
+<div class="bg bg2"></div>
+<div class="bg bg3"></div>
+
+
+	<h1>Welcome to the Sreeja's kitchen Survey Form</h1>
+
+	<!-- Create Form -->
+	<form  id="review-form" method="post" action="{% url 'predicted' %}"  onsubmit="showSubmitAlert()">
+    {% csrf_token %}
+    <div class="form-group">
+
+		<!-- Details -->
+		<div class="form-control">
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+			<label for="name" id="label-name">
+				Name
+			</label>
+
+			<!-- Input Type Text -->
+			<input type="text"
+				id="name" name="name"
+				placeholder="Enter your name" />
+		</div>
+
+		<div class="form-control">
+			<label for="email" id="label-email">
+				Email
+			</label>
+
+			<!-- Input Type Email-->
+			<input type="email"
+				id="email" name="email"
+				placeholder="Enter your email" />
+		</div>
+
+		<div class="form-control">
+			<label for="age" id="label-age">
+				Age
+			</label>
+
+			<!-- Input Type Text -->
+			<input type="text"
+				id="age" name="age"
+				placeholder="Enter your age" />
+		</div>
+
+		<div class="form-control">
+			<label for="role" id="label-role">
+				Which option best describes you?
+			</label>
+			
+			<!-- Dropdown options -->
+			<select name="role" id="role">
+				<option value="student">Student</option>
+				
+				<option value="professional">
+					Professional
+				</option>
+				<option value="retired">Retired</option>
+				<option value="other">Other</option>
+			</select>
+		</div>
+
+		<div class="form-control">
+			<label>
+				Would you recommend the product or services
+				to a friend?
+			</label>
+
+			<!-- Input Type Radio Button -->
+			<label for="recommed-1">
+				<input type="radio"
+					id="recommed-1"
+					name="recommed">Yes</input>
+			</label>
+			<label for="recommed-2">
+				<input type="radio"
+					id="recommed-2"
+					name="recommed">No</input>
+			</label>
+			<label for="recommed-3">
+				<input type="radio"
+					id="recommed-3"
+					name="recommed">Maybe</input>
+			</label>
+		</div>
+
+		<div class="form-control">
+			<label>Kind of food you prefer
+				<small>(Check all that apply)</small>
+			</label>
+			<!-- Input Type Checkbox -->
+			<label for="inp-1">
+				<input type="checkbox"
+					name="inp">vegetarian</input></label>
+			<label for="inp-2">
+				<input type="checkbox"
+					name="inp">non-vegetarian</input></label>
+			<label for="inp-3">
+				<input type="checkbox"
+					name="inp">both veg and non-veg</input></label>
+			<label for="inp-4">
+				<input type="checkbox"
+					name="inp">only drinks</input></label>
+			
+		</div>
+
+		<div class="form-control">
+			<label for="comment">
+				Any reviews or suggestions
+			</label>
+
+			<!-- multi-line text input control -->
+			<textarea class="form-control" id="review" name="input-name" rows="5"
+				placeholder="Enter your review here">
+			</textarea>
+		</div>
+  </div>
+		<!-- Multi-line Text Input Control -->
+    <button type="submit" class="btn btn-primary" onclick="predictSentiment()">Submit</button>
+  
+	</form>
+  
+	<script>
+
+	function showSubmitAlert() {
+		var message = "Thank you for filling the form.\n Click ok to submit the Form successfully .";
+		var confirmation = confirm(message);
+    
+		if (confirmation) {
+			// The user clicked OK, proceed with form submission
+			document.getElementById('review-form').submit();
+		} else {
+			// The user clicked Cancel, do nothing or perform any desired action
+		}
+	  }
+    function predictSentiment() {
+        // Get the review text from the form input
+        var review = document.getElementById('review').value;
+
+        // Make an AJAX request to the Django view
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'C:\Users\Harsh kumar\Desktop\vs code major project\maansi\home\views.py', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // Get the predicted sentiment from the response
+               // var response = JSON.parse(xhr.responseText);
+               // var sentiment = response.prediction;
+
+                // Display the predicted sentiment on the page
+               // document.getElementById('result').innerHTML = 'Predicted Sentiment: ' + {{prediction}};
+            }
+        };
+
+        // Send the review data to the Django view
+        xhr.send(JSON.stringify({ review: review }));
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+// Assuming you are using jQuery
+$.ajaxSetup({
+beforeSend: function(xhr, settings) {
+if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+  // Only add the CSRF token for relative URLs
+  xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+}
+}
+});
+
+// Function to retrieve the CSRF token from the cookie
+function getCookie(name) {
+var cookieValue = null;
+if (document.cookie && document.cookie !== "") {
+var cookies = document.cookie.split(";");
+for (var i = 0; i < cookies.length; i++) {
+  var cookie = jQuery.trim(cookies[i]);
+  if (cookie.substring(0, name.length + 1) === (name + "=")) {
+    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+    break;
+  }
+}
+}
+return cookieValue;
+}
+</script>
+</body>
+</html>
