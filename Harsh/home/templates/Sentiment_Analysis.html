@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sentiment Results</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-labels"></script>
+    
+    <style>
+        body {
+            background: linear-gradient(-45deg, #d5a023, #8ed523, #23b7d5,#7f23d5, #EB4B4B , #E948DF );
+            background-size: 400% 400%;
+            animation: gradient 10s ease infinite;
+            height: 100vh;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+         
+            50% {
+                background-position: 100% 50%;
+            }
+         
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .chart-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1000px;
+            padding: 50px; 
+        }
+
+        .chart-container div {
+            margin-bottom: 30px;
+          }
+
+        .chart-container canvas {
+            max-width: 430px;
+            max-height: 370px;
+        }
+
+        .center-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            bottom: 0;
+            width: 100%;
+            padding: 5px 0;
+            
+        }
+
+        .center-button button {
+            font-size: 20px;
+            padding: 10px 10px;
+            background-color: #E51D3B  ;
+            color: #E1DEDE ;
+            border: none;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex flex-column justify-content-center w-100 h-100"></div>
+
+    <div class="chart-container">
+        <div>
+            <h1>No. of Sentiments</h2>
+            <h3>Total Number of Reviews: {{ total_count }}</h3>
+            <h3>Number of Positive Sentiments: {{ positive_count }}</h3>
+            <h3>Number of Negative Sentiments: {{ negative_count }}</h3>
+            <h3>Number of Neutral Sentiments: {{ neutral_count }}</h3>
+        </div>
+        <div>
+            <h1>Pie Chart showing the percentage of each sentiment</h1>
+            <canvas id="sentimentChart"></canvas>
+        </div>
+        <div>
+            <h1>Bar Graph showing the count of each sentiment</h1>
+            <canvas id="sentimentBar"></canvas>
+        </div>
+    </div>
+
+    <div class="center-button">
+        <form action="{% url 'heySweetheart' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+            <button type="submit"  id="goToResultsBtn"><h3>Open the review form</h3></button>
+        </form>
+    </div>
+
+    <script>
+        var positiveCount = {{ positive_count }};
+        var negativeCount = {{ negative_count }};
+        var neutralCount = {{ neutral_count }};
+
+        // Calculate the percentages
+        var total = positiveCount + negativeCount + neutralCount;
+        var positivePercentage = (positiveCount / total) * 100;
+        var negativePercentage = (negativeCount / total) * 100;
+        var neutralPercentage = (neutralCount / total) * 100;
+
+        // Create the pie chart
+        var ctx1 = document.getElementById('sentimentChart').getContext('2d');
+        var chart1 = new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                labels: ['Positive', 'Negative', 'Neutral'],
+                datasets: [{
+                    data: [positivePercentage, negativePercentage, neutralPercentage],
+                    backgroundColor: ['#0492FB', '#FF0D02', '#ffce56']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    labels: {
+                        render: 'percentage',
+                        fontColor: '#020202',
+                        fontSize: 40,
+                        // Modify the font color to a darker shade
+                        fontStyle: 'bold',
+                        precision: 1,
+                        position: 'outside',
+                        arc: false,
+                        overlap: false
+                    }
+                }
+            }
+        });
+
+        // Create the bar chart
+        var ctx2 = document.getElementById('sentimentBar').getContext('2d');
+        var chart2 = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Positive', 'Negative', 'Neutral'],
+                datasets: [{
+                    label: 'Sentiment Counts',
+                    data: [positiveCount, negativeCount, neutralCount],
+                    backgroundColor: ['#0492FB', '#FF0D02', '#ffce56'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+
+                plugins: {
+                    legend: {
+                        labels: {
+                            fontColor: '#020202' // Modify the font color of the legend label to black
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
